@@ -3,19 +3,24 @@ import { hex } from "../build/main.compiled.json";
 import { Blockchain, SandboxContract, TreasuryContract } from "@ton/sandbox";
 import { MainContract } from "../wrappers/MainContract";
 import "@ton/test-utils";
+import { compile } from "@ton/blueprint";
 
 describe("main.fc contract tests", () => {
   let blockchain: Blockchain;
   let myContract: SandboxContract<MainContract>;
   let initWallet: SandboxContract<TreasuryContract>;
   let ownerWallet: SandboxContract<TreasuryContract>;
+  let codeCell: Cell;
+
+  beforeAll(async () => {
+    codeCell = await compile("MainContract");
+  });
 
   beforeEach(async () => {
     blockchain = await Blockchain.create();
+
     initWallet = await blockchain.treasury("initWallet");
     ownerWallet = await blockchain.treasury("ownerWallet");
-
-    const codeCell = Cell.fromBoc(Buffer.from(hex, "hex"))[0];
 
     myContract = blockchain.openContract(
       MainContract.createFromConfig(
@@ -102,7 +107,7 @@ describe("main.fc contract tests", () => {
     const withdrawalRequestResult = await myContract.sendWithdrawalRequest(
       ownerWallet.getSender(),
       toNano("0.05"),
-      toNano("1")
+      toNano("1"),
     );
 
     expect(withdrawalRequestResult.transactions).toHaveTransaction({
@@ -121,7 +126,7 @@ describe("main.fc contract tests", () => {
     const withdrawalRequestResult = await myContract.sendWithdrawalRequest(
       senderWallet.getSender(),
       toNano("0.5"),
-      toNano("1")
+      toNano("1"),
     );
 
     expect(withdrawalRequestResult.transactions).toHaveTransaction({
@@ -136,7 +141,7 @@ describe("main.fc contract tests", () => {
     const withdrawalRequestResult = await myContract.sendWithdrawalRequest(
       ownerWallet.getSender(),
       toNano("0.5"),
-      toNano("1")
+      toNano("1"),
     );
 
     expect(withdrawalRequestResult.transactions).toHaveTransaction({

@@ -6,6 +6,7 @@
   "devDependencies": {
     "@swc/core": "^1.6.5",
     "@ton-community/func-js": "^0.7.0",
+    "@ton/blueprint": "^0.21.0",
     "@ton/core": "^0.56.3",
     "@ton/crypto": "^3.2.0",
     "@ton/sandbox": "^0.20.0",
@@ -28,12 +29,7 @@
     "yarn": "^1.22.22"
   },
   "scripts": {
-    "compile": "ts-node ./scripts/compile.ts",
-    "test": "yarn compile && yarn jest",
-    "deploy": "yarn compile && TESTNET=true ts-node ./scripts/deploy.ts",
-    "deploy:mainnet": "yarn compile && ts-node ./scripts/deploy.ts",
-    "onchaintest": "TESTNET=true ts-node ./scripts/onchain_test.ts",
-    "onchaintest:mainnet": "ts-node ./scripts/onchain_test.ts"
+    "test": "yarn jest"
   },
   "dependencies": {
     "@orbs-network/ton-access": "^2.3.3",
